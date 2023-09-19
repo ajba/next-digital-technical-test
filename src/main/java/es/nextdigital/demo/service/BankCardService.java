@@ -41,4 +41,17 @@ public class BankCardService {
     public BankCard save(BankCard bankCard){
         return this.bankCardRepository.save(bankCard);
     }
+
+    public Boolean deposit(Long cardNumber, Long amount, String cashierName) {
+        BankCard bankCard = this.findByCardNumber(cardNumber);
+        Boolean success = false;
+
+        if(bankCard != null && bankCard.getBankAccount().getBank().getName().equals(cashierName)){
+            bankCard.getBankAccount().setBalance(bankCard.getBankAccount().getBalance()+amount);
+            success = true;
+        }
+        this.save(bankCard);
+
+        return success;
+    }
 }

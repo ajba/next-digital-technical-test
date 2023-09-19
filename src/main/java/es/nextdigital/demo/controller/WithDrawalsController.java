@@ -1,6 +1,5 @@
 package es.nextdigital.demo.controller;
 
-import es.nextdigital.demo.repository.BankCardRepository;
 import es.nextdigital.demo.service.BankCardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
