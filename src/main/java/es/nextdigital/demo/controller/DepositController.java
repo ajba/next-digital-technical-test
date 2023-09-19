@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/bank/withdrawals")
+@RequestMapping("/bank/deposit")
 @Slf4j
 public class DepositController {
 

@@ -4,6 +4,9 @@ import es.nextdigital.demo.domain.BankCard;
 import es.nextdigital.demo.repository.BankCardRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
+
+import java.nio.charset.StandardCharsets;
 
 @Service
 @Transactional
@@ -20,7 +23,7 @@ public class BankCardService {
         BankCard bankCard = this.findByCardNumber(cardNumber);
         Boolean success = false;
 
-        if(bankCard != null){
+        if(bankCard != null && bankCard.getIsActive()){
             if(bankCard.getCardType().toString().equals("DEBIT") && bankCard.getBankAccount().getBalance() >= amount){
                 bankCard.getBankAccount().setBalance(bankCard.getBankAccount().getBalance()-amount);
                 success = true;
@@ -46,11 +49,39 @@ public class BankCardService {
         BankCard bankCard = this.findByCardNumber(cardNumber);
         Boolean success = false;
 
-        if(bankCard != null && bankCard.getBankAccount().getBank().getName().equals(cashierName)){
+        if(bankCard != null && bankCard.getIsActive() && bankCard.getBankAccount().getBank().getName().equals(cashierName)){
             bankCard.getBankAccount().setBalance(bankCard.getBankAccount().getBalance()+amount);
             success = true;
         }
         this.save(bankCard);
+
+        return success;
+    }
+
+    public Boolean active(Long cardNumber) {
+        BankCard bankCard = this.findByCardNumber(cardNumber);
+        Boolean success = false;
+
+        if(bankCard != null) {
+            bankCard.setIsActive(true);
+            this.bankCardRepository.save(bankCard);
+            success = true;
+        }
+
+        return success;
+    }
+
+    public Boolean changePin(Long cardNumber, String pin) {
+        BankCard bankCard = this.findByCardNumber(cardNumber);
+        Boolean success = false;
+
+        if(bankCard != null) {
+            String encriptPin= String.valueOf(DigestUtils.md5Digest(pin.getBytes(StandardCharsets.UTF_8)));
+            bankCard.setPin(encriptPin);
+            this.bankCardRepository.save(bankCard);
+            success = true;
+
+        }
 
         return success;
     }
