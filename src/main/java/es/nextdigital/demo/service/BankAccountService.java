@@ -25,13 +25,14 @@ public class BankAccountService {
     }
 
     public List<ConsultingOutDTO> findByUserIdAndIbanAndMoveType(Long userId, String iban, String move) {
-        BankAccount bankAccount = this.bankAccountRepository.findByUserIdAndIbanAndMoveType(userId,iban,move);
+        BankAccount bankAccount = this.bankAccountRepository.findByUserIdAndIbanAndMoveType(userId, iban, move);
         List<ConsultingOutDTO> consultingOutDTORes = new ArrayList<>();
 
-        if(bankAccount != null){
-            consultingOutDTORes = bankAccount.getBankingMovements().stream().map(bm -> new ConsultingOutDTO(bm.getId(),bm.getMove().toString())).collect(Collectors.toList());
-        }else {
+        if (bankAccount != null) {
+            return consultingOutDTORes = bankAccount.getBankingMovements().stream().map(bm -> new ConsultingOutDTO(bm.getId(), bm.getMove().toString())).collect(Collectors.toList());
+        } else {
             return consultingOutDTORes;
         }
     }
+
 }
