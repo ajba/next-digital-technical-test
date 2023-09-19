@@ -27,6 +27,9 @@ public class BankAccount {
 
     private Long balance;
 
+    @Column(name="balance_per_day")
+    private Long balancePerDay;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private BankUser accountOwner;
 
